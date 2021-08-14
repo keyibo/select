@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+	
+	<link type="text/css" href="css/style.css" rel="stylesheet" />
+	
+</head>
+
+<body>
+
+<div class="turntable">
+	<div id="bg">
+		<img src="img/ks.png" alt="pointer" id="img1">
+		<img src="img/zp.png" alt="turntable" id="img2">
+	</div>
+</div>
+
+<script>
+    var oPointer = document.getElementById("img1");
+    var oTurntable = document.getElementById("img2");
+    var cat = 60; //总共6个扇形区域，每个区域约60度;
+    var num = 0; //转圈结束后停留的度数
+    var offOn = true; //是否正在抽奖
+	var ci = false;
+    var  range;
+    range = cat * 6;
+    var q;
+    oPointer.onclick = function() {
+            if (offOn) {
+                offOn = !offOn;
+			ratating(); //调用旋转
+            }
+
+        }
+        //旋转
+    function ratating() {
+        var timer = null;
+        var rdm = 0; //随机度数
+        timer = setInterval(function cir() {
+            if (Math.floor(rdm / 360) < 3) {
+                var randLoop = randomNum(2, 4);
+                rdm = randomNum(0,360) + randLoop * range;
+            } else {
+            	if (ci){
+            		rdm = rdm + 1080
+					ci = false
+				}
+            	else{
+            		ci = true
+				}
+                oTurntable.style.transform = "rotate(" + rdm + "deg)";
+                clearInterval(timer);
+                setTimeout(function() {
+                    offOn = !offOn;
+                    num = rdm % 360;
+                    if ((0<=num && num<30 )|| 330<num ) {
+                        alert('东南亚走起！')
+
+                    } else if (30<= num && num < 90) {
+						alert('去尝尝特色菜吧！')
+
+                    }else if (90<= num && num<150) {
+						alert('去当一回上等人！')
+
+                    }else if (150<= num && num<210) {
+                        alert('烤肉！')
+
+                    }else if (210<= num && num<270) {
+                       alert('日韩料理！')
+
+                    }else
+					{alert('火锅！')}
+                }, 4000);
+            }
+        }, 30);
+    }
+
+
+    //生成[n,m]的随机整数
+    function randomNum(minNum, maxNum) {
+
+		return parseInt(Math.random() * (maxNum - minNum + 1) + minNum, 10);
+
+    }
+</script>
+
+</body>
+</html>
